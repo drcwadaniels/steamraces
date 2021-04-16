@@ -1,15 +1,15 @@
 # This script is for scraping the steam stats website
 import requests
-import pprint
 from bs4 import BeautifulSoup
 import numpy as np
-
+import pandas as pd
+from datetime import datetime
 #scrape the steam stats webpage
 URL = "https://store.steampowered.com/stats/Steam-Game-and-Player-Statistics"
 steamstats = requests.get(URL)
 steamstats_soup = BeautifulSoup(steamstats.content, 'html.parser')
 gamesstats = steamstats_soup.find(id='detailStats')
-games = gamesstats.find_all('a',class_='gameLink')
+games = gamesstats.find_all('a', class_='gameLink')
 people = gamesstats.find_all('span', class_='currentServers')
 
 #create list of top 100 games
@@ -21,10 +21,25 @@ for g in games:
 #zip people counts
 people_list = list()
 for p in people:
-    people_list.append(p.text)
+    people_list.append(int(int(p.text.replace(',', ''))))
 people_iter = iter(people_list)
-people_game_counts = [*zip(int(people_iter), int(people_iter))]
-print(people_game_counts)
+people_game_counts = [*zip(people_iter, people_iter)]
+people_game_counts = np.array(people_game_counts)
+
+#grab datetime
+time = datetime.now()
+print(time)
+
+game_database = pd.DataFrame(columns={'Date', 'Time', 'Game', 'CurrentPlayers', 'PeakPlayers'})
+game_database.Date = [time.strftime("%y/%m/%d")]*100
+game_database.Time = [time.strftime("%H/%M/%S")]*100
+game_database.Game = game_list
+game_database.CurrentPlayers = people_game_counts[:, 0]
+game_database.PeakPlayers = people_game_counts[:, 1]
+
+game_database.to_sql()
+
+
 
 
 
