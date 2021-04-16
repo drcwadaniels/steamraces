@@ -6,12 +6,7 @@ import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine
 import pymysql
-from apscheduler.scheduler import Scheduler
-
-#initalize scheduler
-sched = Scheduler()
-sched.daemonic = False
-sched.start()
+from apscheduler.schedulers.background import BackgroundScheduler
 
 def steamscraper():
     # scrape the steam stats webpage
@@ -40,20 +35,22 @@ def steamscraper():
     time = datetime.now()
 
     game_database = pd.DataFrame(columns={'Date', 'Time', 'Game', 'CurrentPlayers', 'PeakPlayers'})
-    game_database.Date = [time.strftime("%y/%m/%d")]*100
-    game_database.Time = [time.strftime("%H/%M/%S")]*100
+    game_database.Date = [time.strftime("%y/%m/%d")] * 100
+    game_database.Time = [time.strftime("%H/%M/%S")] * 100
     game_database.Game = game_list
     game_database.CurrentPlayers = people_game_counts[:, 0]
     game_database.PeakPlayers = people_game_counts[:, 1]
 
-    #create engine for pandas sql
+    # create engine for pandas sql
 
-    engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="u$watchmenR15!", db = "steamraces"))
+    engine = create_engine(
+        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
 
 
-sched.add_cron_job(steamscraper, minute=5)
+# initalize scheduler
+sched = BackgroundScheduler()
+sched.start()
 
-
-
+sched.add_job(steamscraper, 'interval', minutes=5, id="steam_job")
