@@ -57,7 +57,7 @@ if __name__ == '__main__':
     logging.basicConfig()
     logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     scheduler = BlockingScheduler()
-    scheduler.add_job(steamscraper, 'interval', mintes=60, replace_existing=True)
+    scheduler.add_job(steamscraper, 'interval', minutes=60, replace_existing=True)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
