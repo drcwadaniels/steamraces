@@ -45,7 +45,7 @@ def steamscraper():
     # create engine for pandas sql
 
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
+        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="u$watchmenR15!", db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
 
