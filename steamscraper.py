@@ -53,5 +53,6 @@ def steamscraper():
 # initalize scheduler
 scheduler = BlockingScheduler()
 scheduler.add_executor('processpool')
-scheduler.add_job(steamscraper, 'interval', minutes=5)
+scheduler.add_job(steamscraper, 'interval', minutes=60)
 
+steamscraper()

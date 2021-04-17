@@ -1,0 +1,1 @@
+C:\ProgramData\Anaconda3\envs\steamraces\python.exe "E:\Code\steamraces\steamscraper.py"
