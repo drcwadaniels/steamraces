@@ -6,7 +6,8 @@ import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine
 import pymysql
-from apscheduler.schedulers.background import BackgroundScheduler
+import os
+from apscheduler.schedulers.background import BlockingScheduler
 
 def steamscraper():
     # scrape the steam stats webpage
@@ -44,13 +45,13 @@ def steamscraper():
     # create engine for pandas sql
 
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
+        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="u$watchmenR15!", db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
 
 
 # initalize scheduler
-sched = BackgroundScheduler()
-sched.start()
+scheduler = BlockingScheduler()
+scheduler.add_executor('processpool')
+scheduler.add_job(steamscraper, 'interval', minutes=5)
 
-sched.add_job(steamscraper, 'interval', minutes=5, id="steam_job")
