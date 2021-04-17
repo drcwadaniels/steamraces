@@ -8,6 +8,7 @@ from sqlalchemy import create_engine
 import pymysql
 import os
 from apscheduler.schedulers.background import BlockingScheduler
+import logging
 
 
 def steamscraper():
@@ -46,14 +47,24 @@ def steamscraper():
 
     # create engine for pandas sql
 
-    engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
+    engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
 
 
-# initialize scheduler
-scheduler = BlockingScheduler()
-scheduler.add_executor('processpool')
-scheduler.add_job(steamscraper, 'interval', minutes=60)
-scheduler.start()
+# scheduler
+if __name__ == '__main__':
+    logging.basicConfig()
+    logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+    scheduler = BlockingScheduler()
+    scheduler.add_job(steamscraper, 'interval', mintes=60, replace_existing=True)
+    scheduler.start()
+    print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
+
+    try:
+        # keeping things alive, as we know it; and I feel fine!
+        while True:
+            time.sleep(5)
+    except (KeyboardInterrupt, SystemExit):
+        # kill this program
+        scheduler.shutdown()
