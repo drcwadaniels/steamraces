@@ -9,10 +9,12 @@ import pymysql
 import os
 from apscheduler.schedulers.background import BlockingScheduler
 
+
 def steamscraper():
     # scrape the steam stats webpage
-    URL = "https://store.steampowered.com/stats/Steam-Game-and-Player-Statistics"
-    steamstats = requests.get(URL)
+    print("Steam scraper started")
+    url = "https://store.steampowered.com/stats/Steam-Game-and-Player-Statistics"
+    steamstats = requests.get(url)
     steamstats_soup = BeautifulSoup(steamstats.content, 'html.parser')
     gamesstats = steamstats_soup.find(id='detailStats')
     games = gamesstats.find_all('a', class_='gameLink')
@@ -45,12 +47,12 @@ def steamscraper():
     # create engine for pandas sql
 
     engine = create_engine(
-        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="u$watchmenR15!", db="steamraces"))
+        "mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
 
 
-# initalize scheduler
+# initialize scheduler
 scheduler = BlockingScheduler()
 scheduler.add_executor('processpool')
 scheduler.add_job(steamscraper, 'interval', minutes=60)
