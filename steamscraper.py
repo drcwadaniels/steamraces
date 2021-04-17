@@ -58,13 +58,14 @@ if __name__ == '__main__':
     logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     scheduler = BlockingScheduler()
     scheduler.add_job(steamscraper, 'interval', minutes=60, replace_existing=True)
+    steamscraper()
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
     try:
         # keeping things alive, as we know it; and I feel fine!
         while True:
-            time.sleep(5)
+            time.sleep(58)
     except (KeyboardInterrupt, SystemExit):
         # kill this program
         scheduler.shutdown()
