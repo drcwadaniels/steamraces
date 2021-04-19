@@ -11,9 +11,10 @@ from apscheduler.schedulers.background import BlockingScheduler
 import logging
 
 
-def steamscraper():
+def steamscraper(q):
+    q = q + 1
     # scrape the steam stats webpage
-    print("Steam scraper started")
+    print("Steam scraper for entry:", q)
     url = "https://store.steampowered.com/stats/Steam-Game-and-Player-Statistics"
     steamstats = requests.get(url)
     steamstats_soup = BeautifulSoup(steamstats.content, 'html.parser')
@@ -38,7 +39,8 @@ def steamscraper():
     # grab datetime
     time = datetime.now()
 
-    game_database = pd.DataFrame(columns={'Date', 'Time', 'Game', 'CurrentPlayers', 'PeakPlayers'})
+    game_database = pd.DataFrame(columns={'Entry', 'Date', 'Time', 'Game', 'CurrentPlayers', 'PeakPlayers'})
+    game_database.Entry = np.repeat(q, 100)
     game_database.Date = [time.strftime("%y/%m/%d")] * 100
     game_database.Time = [time.strftime("%H/%M/%S")] * 100
     game_database.Game = game_list
@@ -47,9 +49,28 @@ def steamscraper():
 
     # create engine for pandas sql
 
-    engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="", db="steamraces"))
+    engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="",
+                                                                               db="steamraces"))
 
     game_database.to_sql('counts', con=engine, if_exists="append")
+    print("Steam scraper finished for entry:", q)
+
+
+# index entries to sql server
+def get_entries():
+    engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root",
+                                                                               pw="",db="steamraces"))
+    try:
+        entries = pd.read_sql('SELECT DISTINCT(Entry) FROM steamraces.counts', con=engine)
+        q = entries.iloc[-1].to_numpy()
+    except ValueError:
+        print("No entries yet")
+        q = 0
+    return q
+
+
+# get entries for indexing
+q = get_entries()
 
 
 # scheduler
@@ -57,15 +78,16 @@ if __name__ == '__main__':
     logging.basicConfig()
     logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     scheduler = BlockingScheduler()
-    scheduler.add_job(steamscraper, 'interval', minutes=60, replace_existing=True)
-    steamscraper()
+    scheduler.add_job(lambda: steamscraper(q), 'interval', minutes=2, replace_existing=True)
+    if q == 0:
+        steamscraper(q)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
     try:
         # keeping things alive, as we know it; and I feel fine!
         while True:
-            time.sleep(58)
+            time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
         # kill this program
         scheduler.shutdown()
