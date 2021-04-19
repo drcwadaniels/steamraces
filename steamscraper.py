@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine
-import pymysql
-import os
+import sqlalchemy
 from apscheduler.schedulers.background import BlockingScheduler
 import logging
 
@@ -63,7 +62,7 @@ def get_entries():
     try:
         entries = pd.read_sql('SELECT DISTINCT(Entry) FROM steamraces.counts', con=engine)
         q = entries.iloc[-1].to_numpy()
-    except ValueError:
+    except sqlalchemy.exc.ProgrammingError as e:
         print("No entries yet")
         q = 0
     return q
@@ -78,7 +77,7 @@ if __name__ == '__main__':
     logging.basicConfig()
     logging.getLogger('apscheduler').setLevel(logging.DEBUG)
     scheduler = BlockingScheduler()
-    scheduler.add_job(lambda: steamscraper(q), 'interval', minutes=2, replace_existing=True)
+    scheduler.add_job(lambda: steamscraper(q), 'interval', minutes=60, replace_existing=True)
     if q == 0:
         steamscraper(q)
     scheduler.start()
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     try:
         # keeping things alive, as we know it; and I feel fine!
         while True:
-            time.sleep(1)
+            time.sleep(58)
     except (KeyboardInterrupt, SystemExit):
         # kill this program
         scheduler.shutdown()
