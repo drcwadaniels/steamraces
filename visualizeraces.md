@@ -23,7 +23,7 @@ Now, admittedly, because I am scraping the steam statistics page to get player c
 I think there are a few take aways based on *Figure 1*
 
 1. The top games are not surprising as they are multiplayer juggernauts with broad appeal. 
-2. Most games have a period in which the slope is relatively steep indicating maintenance of player counts 
+2. Most games have a period in which the slope is relatively steep and constant indicating maintenance of player counts 
 3. More often than not this is followed by a reduction in the slope indicating some individuals have perhaps turned in for the night
 4. Other times the slope increases! Indicating a surge in popularity. For example, Statisfactory in the third panel, top row
 5. Overall, the slopes of these cumulative sums seems to indicate strong nonlinearities and game differences 
