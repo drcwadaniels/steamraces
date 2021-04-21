@@ -8,7 +8,7 @@ The goal of this project is two-fold:
 Now, admittedly, because I am scraping the steam statistics page to get player counts it will not be as reliable as using their API. Nonetheless, we should be able to glean some insights from just visually inspecting our data. 
 
 
-**What's on as of 4/20/2021 @ 12:04pm ? **
+**What's on as of 4/20/2021 @ 12:04pm ?**
 
 ![AbsolutePlayers](https://github.com/drcwadaniels/steamraces/blob/master/AbsolutePlayers.png)
 
