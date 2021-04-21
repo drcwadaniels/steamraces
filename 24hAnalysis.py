@@ -39,7 +39,7 @@ for game in max_current_users_by_game.Game.unique():
              min_current_users_by_game.CurrentPlayers[min_current_users_by_game['Game'] == game].to_numpy(),
              alpha=0.2, marker=m, label=game)
     if i2 == 1 or i2 == 5:
-        plt.ylabel('Cumulative Sum of the Proportion of Players Above Hour 0')
+        plt.ylabel('Cumulative Sum of Players / Players at Hour = 0')
     if i2 >= 5:
         plt.xlabel('Ordinal Hour: Hour 0 = First Appearance in Top 100')
     plt.legend(bbox_to_anchor=(1.7, 0.8, 0.3, 0.2), loc='upper right', prop={'size':7.5})
@@ -68,7 +68,7 @@ for game in max_current_users_by_game.Game.unique():
     plt.plot(current_users_by_game.CurrentPlayers[current_users_by_game['Game'] == game].to_numpy(),
              alpha=0.2, marker=m, label=game)
     if i2 == 1 or i2 == 5:
-        plt.ylabel('Cumulative Sum of Current Players')
+        plt.ylabel('Cumulative Sum of Players')
     if i2 >= 5:
         plt.xlabel('Ordinal Hour: Hour 0 = First Appearance in Top 100')
     plt.legend(bbox_to_anchor=(1.7, 0.8, 0.3, 0.2), loc='upper right', prop={'size':7.5})
