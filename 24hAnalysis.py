@@ -6,13 +6,18 @@ from sqlalchemy import create_engine
 import sqlalchemy
 
 # establish engine for pulling data
-engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="",
+engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="u$watchmenR15!",
                                                                            db="steamraces"))
 
 # pull data with pandas
 tabbed_data = pd.read_sql("""SELECT * FROM steamraces.counts""", con=engine)
 
-current_users_by_game = tabbed_data.groupby(['Game', 'Time']).sum() \
+for g in tabbed_data.Game.unique():
+    ordinal_hour = np.linspace(0, len(tabbed_data.CurrentPlayers[tabbed_data['Game'] == g].to_numpy()),
+                               len(tabbed_data.CurrentPlayers[tabbed_data['Game'] == g].to_numpy()))
+    tabbed_data.loc[tabbed_data['Game'] == g, 'Ordinal Hour'] = ordinal_hour
+
+current_users_by_game = tabbed_data.groupby(['Game', 'Ordinal Hour']).sum() \
     .groupby(level=0).cumsum().reset_index()
 min_current_users_by_game = current_users_by_game.groupby(['Game']).min().reset_index().sort_values(
     by=['CurrentPlayers'], ascending=False)
@@ -46,7 +51,7 @@ for game in max_current_users_by_game.Game.unique():
 plt.subplots_adjust(wspace=1.15)
 plt.tight_layout()
 # get matplotlib baxkend so figures are saved max size
-plt.savefig("RelativePlayers.png")
+plt.savefig("RelativePlayers_24plus.png")
 
 
 
@@ -74,4 +79,4 @@ for game in max_current_users_by_game.Game.unique():
     plt.legend(bbox_to_anchor=(1.7, 0.8, 0.3, 0.2), loc='upper right', prop={'size':7.5})
 plt.subplots_adjust(wspace=1.15)
 plt.tight_layout()
-plt.savefig("AbsolutePlayers.png")
+plt.savefig("AbsolutePlayers_24plus.png")
