@@ -12,3 +12,4 @@ A basic web scraper to collect player counts for some fun data analytics
 **Links to see the outcome of this work**
 1. [Visualization](visualizeraces.md) of the first 24 hours with some preliminary conclusions
 2. [Visualization](visualizeraces24plus.md) of 24 hours plus! This is the page that will update everyday so we can see he unweighted race unfold. 
+3. Coming soon: is that cumulative sum from a linear or cyclical process?
