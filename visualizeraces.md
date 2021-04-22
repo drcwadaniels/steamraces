@@ -12,7 +12,7 @@ Now, admittedly, because I am scraping the steam statistics page to get player c
 
 ![AbsolutePlayers](https://github.com/drcwadaniels/steamraces/blob/master/AbsolutePlayers.png)
 
-*Figure 1* The figure above shows the cumulative sum of the absolute current players at the bottom of every hour (i.e., ~ at the 30 minute mark of each hour). Data were sorted based on the maximum number of cumulative sum players such that each panel in the figure contains 20 games. 
+*Figure 1* The figure above shows the cumulative sum of the absolute current players at the bottom of every hour (i.e., ~ at the 30 minute mark of each hour). Data were sorted based on the maximum number of cumulative sum players such that each panel in the figure contains 20 games going left to right, top to bottom from game with most current players to least current players.
 
 ![RelativePlayers](https://github.com/drcwadaniels/steamraces/blob/master/RelativePlayers.png)
 
