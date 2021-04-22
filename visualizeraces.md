@@ -1,4 +1,4 @@
-# Steam Races Update
+# Steam Races Update: The First 24 Hours
 
 Welcome to the steam races! 
 The goal of this project is two-fold:
