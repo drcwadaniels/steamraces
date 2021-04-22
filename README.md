@@ -10,4 +10,5 @@ A basic web scraper to collect player counts for some fun data analytics
 2. steamscraper.BAT is my BAT file for the steamscraper to start when I log into my computer. 
 
 **Links to see the outcome of this work**
-1. [Visualization](visualizeraces.md) of the raw data and preliminary conclusions
+1. [Visualization](visualizeraces.md) of the first 24 hours with some preliminary conclusions
+2. [Visualization](visualizeraces24plus.md) of 24 hours plus! This is the page that will update everyday so we can see he unweighted race unfold. 
