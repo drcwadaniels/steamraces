@@ -16,7 +16,7 @@ Now, admittedly, because I am scraping the steam statistics page to get player c
 
 ![RelativePlayers](https://github.com/drcwadaniels/steamraces/blob/master/RelativePlayers.png)
 
-*Figure 2* The figure above  shows the same data as in *Figure 1*, except now the data have been rescaled to the minimum number of players. 
+*Figure 2* The figure above  shows the same data as in *Figure 1*, except now the data have been rescaled to the minimum number of players for each game. 
 
 **What to make of this data**
 
