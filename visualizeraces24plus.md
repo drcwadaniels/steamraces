@@ -2,7 +2,7 @@
 
 Here you can see the races unfold in absolute and relative terms. These graphs are similar to thos found [here](visualizeraces.md). 
 
-Last update: 6:55am on 4/26/2021
+Last update: 11:13pm on 4/26/2021
 
 ![AbsolutePlayers](https://raw.githubusercontent.com/drcwadaniels/steamraces/master/AbsolutePlayers_24plus.png)
 
